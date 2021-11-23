@@ -38,8 +38,8 @@ router.post(
     if(!transactionType){
       return res.status(400).json({ msg: 'Error: no transaction type' });
     }
-    if(!amount){
-      return res.status(400).json({ msg: 'Error: no amount' });
+    if(amount <= 0){
+      return res.status(400).json({ msg: 'Error: bad amount' });
     } 
     if(transactionType !== 'DEPOSIT' && transactionType !== 'WITHDRAWAL'){
       return res.status(400).json({ msg: 'Error: invalid transaction type' });
@@ -66,7 +66,7 @@ router.post(
         case 'WITHDRAWAL': {
 
           if(Number(amount) > Number(balance)){
-            return res.status(400).json({ msg: 'Error: withdrawal must be less than balance' });
+            return res.status(400).json({ msg: 'Error: withdrawal must be less than or equal to balance' });
           }
           newBalance = Number(balance) - Number(amount);
           break;
